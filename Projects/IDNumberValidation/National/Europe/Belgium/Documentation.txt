@@ -1,0 +1,8 @@
+﻿NationalNumber, BISNumber, SISNumber, IDCardNumber:
+http://www.ksz-bcss.fgov.be/nl/bcss/page/content/websites/belgium/services/docutheque/technical_faq/faq_5.html#Hoe-zit-de-structuu-59
+
+BISNumber:
+http://www.kruispuntmi.be/vreemdelingenrecht/wegwijs.aspx?id=13066
+
+CBENumber, VATNumber:
+http://www.bibf.be/pacioli/Pacioli%20185NL.pdf
