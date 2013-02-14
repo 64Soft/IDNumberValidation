@@ -10,11 +10,4 @@ The purpose of this library is to provide a common interface for identification 
 
 The ultimate goal is obviously to be able to validate any identification number from any country.
 
-As of today, the following validations are implemented:
-
-NATIONAL
-	EUROPE
-		Belgium
-			- National Number of a person
-			- BIS Number of a person (WIP)
-			- Crossroad Bank of Enterprise (CBE) company numbers
+Please see the wiki pages for more information and to find out which validators have already been implemented.
