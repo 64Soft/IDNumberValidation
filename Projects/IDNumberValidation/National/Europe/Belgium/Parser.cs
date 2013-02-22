@@ -5,9 +5,9 @@ using System.Text;
 
 namespace IDNumberValidation.National.Europe.Belgium
 {
-    public static class BelgianPersonIdentifier
+    public class Parser : IPersonIDNumberParser, ICompanyIDNumberParser
     {
-        public static IdentifierParsingResult<PersonIdentifier> ParseNumber(string number)
+        public IdentifierParsingResult<PersonIdentifier> ParsePersonNumber(string number)
         {
             IdentifierParsingResult<PersonIdentifier> result = new IdentifierParsingResult<PersonIdentifier>();
             result.Number = number;
@@ -36,5 +36,28 @@ namespace IDNumberValidation.National.Europe.Belgium
                 return result;
             }
         }
+
+        
+
+        public IdentifierParsingResult<CompanyIdentifier> ParseCompanyNumber(string number)
+        {
+            IdentifierParsingResult<CompanyIdentifier> result = new IdentifierParsingResult<CompanyIdentifier>();
+            result.Number = number;
+            result.IsValid = false;
+
+            CBENumber cbeNumber = new CBENumber(number);
+            cbeNumber.Validate();
+            result.IdentifierList.Add(cbeNumber);
+
+            if (cbeNumber.IsValid.HasValue && cbeNumber.IsValid.Value == true)
+            {
+                result.IsValid = true;            
+            }
+
+            return result;
+            
+        }
+
+        
     }
 }

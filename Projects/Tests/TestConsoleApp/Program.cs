@@ -12,8 +12,13 @@ namespace TestConsoleApp
     {
         static void Main(string[] args)
         {
-            IdentifierParsingResult<PersonIdentifier> parsingResult = BelgianPersonIdentifier.ParseNumber(""); //WHEN CHECKING IN CENTRAL REPOSITORY, LEAVE NUMBER BLANK FOR CONFIDENTIALITY
-            PersonIdentifier pi = parsingResult.GetValidIdentifier();
+            Parser belgianParser = new Parser();
+
+            IdentifierParsingResult<PersonIdentifier> personParsingResult = belgianParser.ParsePersonNumber(""); //WHEN CHECKING IN CENTRAL REPOSITORY, LEAVE NUMBER BLANK FOR CONFIDENTIALITY
+            PersonIdentifier pi = personParsingResult.GetValidIdentifier();
+
+            IdentifierParsingResult<CompanyIdentifier> companyParsingResult = belgianParser.ParseCompanyNumber("");
+            CompanyIdentifier ci = companyParsingResult.GetValidIdentifier();
         }
     }
 }

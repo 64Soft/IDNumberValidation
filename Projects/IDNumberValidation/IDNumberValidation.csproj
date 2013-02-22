@@ -40,11 +40,13 @@
   <ItemGroup>
     <Compile Include="Enumerations.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="ICompanyIDNumberParser.cs" />
     <Compile Include="IIDNumberWithBirthDateInfo.cs" />
     <Compile Include="IIDNumberValidator.cs" />
     <Compile Include="IIDNumberWithGenderInfo.cs" />
+    <Compile Include="IPersonIDNumberParser.cs" />
     <Compile Include="Message.cs" />
-    <Compile Include="National\Europe\Belgium\BelgianPersonIdentifier.cs" />
+    <Compile Include="National\Europe\Belgium\Parser.cs" />
     <Compile Include="National\Europe\Belgium\BISNumber.cs" />
     <Compile Include="National\Europe\Belgium\CBENumber.cs" />
     <Compile Include="CompanyIdentifier.cs" />
