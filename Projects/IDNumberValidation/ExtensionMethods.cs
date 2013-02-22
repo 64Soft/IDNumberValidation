@@ -8,7 +8,7 @@ namespace IDNumberValidation
     /// <summary>
     /// Defines common extension methods
     /// </summary>
-    public static class ExtensionMethods
+    internal static class ExtensionMethods
     {
         /// <summary>
         /// Adds lead characters to a string

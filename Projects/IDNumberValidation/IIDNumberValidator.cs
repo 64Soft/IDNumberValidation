@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace IDNumberValidation
 {
     public interface IIDNumberValidator
     {
+        /// <summary>
+        /// Descriptive name of the type of the identifier
+        /// </summary>
+        string IdentifierType { get; }
+
         /// <summary>
         /// The number to validate.
         /// </summary>
@@ -16,14 +22,14 @@ namespace IDNumberValidation
         bool? IsValid { get; }
 
         /// <summary>
-        /// Collection containing informative messages about the validated number.
+        /// Collection containing messages describing the results of the validation.
         /// </summary>
-        IList<string> InfoMessages { get; }
+        IList<Message> Messages { get; }
 
         /// <summary>
-        /// Collection containing error messages describing the reason(s) why the number is invalid.
+        /// Contains a possible exception that arose during validation
         /// </summary>
-        IList<string> ErrorMessages { get; }
+        Exception ValidationException { get; }
 
         /// <summary>
         /// Validates the number.

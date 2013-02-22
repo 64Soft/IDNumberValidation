@@ -4,27 +4,12 @@ using System.Text.RegularExpressions;
 
 namespace IDNumberValidation.National.Europe.Belgium
 {
-    public class CBENumber : IIDNumberValidator
+    public class CBENumber : CompanyIdentifier
     {
-        public string Number { get; set; }
-        public bool? IsValid { get; private set; }
-        public IList<string> ErrorMessages { get; private set; }
-        public IList<string> InfoMessages { get; private set; }
+        public CBENumber(string number) : base("Belgian CBE Number", number)
+        {  }
 
-        public Exception ValidationException { get; private set; }
-
-        public CBENumber()
-        {
-            this.ErrorMessages = new List<string>();
-        }
-
-        public CBENumber(string number)
-            : this()
-        {
-            this.Number = number;
-        }
-
-        public void Validate()
+        public override void Validate()
         {
 
             if (!String.IsNullOrEmpty(this.Number))
@@ -43,7 +28,7 @@ namespace IDNumberValidation.National.Europe.Belgium
 
                     if (kbonumber.Length != 10)
                     {
-                        this.ErrorMessages.Add("Length != 10");
+                        this.Messages.Add(new Message(MessageType.Error, "Length != 10"));
                         this.IsValid = false;
                     }
                     else
@@ -53,7 +38,7 @@ namespace IDNumberValidation.National.Europe.Belgium
 
                         if (!numberBody[0].Equals('0') && !numberBody[0].Equals('1'))
                         {
-                            this.ErrorMessages.Add("First digit must be 0 or 1");
+                            this.Messages.Add(new Message(MessageType.Error, "First digit must be 0 or 1"));
                             this.IsValid = false;
                         }
                         else
@@ -63,13 +48,13 @@ namespace IDNumberValidation.National.Europe.Belgium
 
                             if (calculatedControl != Int32.Parse(controlNumber))
                             {
-                                this.ErrorMessages.Add("Invalid controlnumber");
+                                this.Messages.Add(new Message(MessageType.Error, "Invalid controlnumber"));
                                 this.IsValid = false;
                             }
                         }
                     }
 
-                    if (this.ErrorMessages.Count == 0) //NO ERRORS FOUND
+                    if (!this.IsValid.HasValue) //NOT SET TO FALSE, THUS NO ERRORS FOUND
                     {
                         this.IsValid = true;
                     }
@@ -83,25 +68,6 @@ namespace IDNumberValidation.National.Europe.Belgium
             }
             else
                 this.ValidationException = new Exception("Number is empty");
-        }
-
-        public string GetErrorMessages()
-        {
-            if (this.ErrorMessages.Count == 0)
-                return null;
-            else
-            {
-                string s = "";
-
-                foreach (string m in this.ErrorMessages)
-                {
-                    s += m + ";";
-                }
-
-                s = s.TrimEnd(';');
-
-                return s;
-            }
         }
     }
 }

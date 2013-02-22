@@ -5,33 +5,23 @@ using System.Text.RegularExpressions;
 
 namespace IDNumberValidation.National.Europe.Belgium
 {
-    public class BISNumber : IIDNumberValidator
+    public class BISNumber : PersonIdentifier, IIDNumberWithBirthDateInfo, IIDNumberWithGenderInfo
     {
-        public string Number { get; set; }
-        public bool? IsValid { get; private set; }
-        public IList<string> ErrorMessages { get; private set; }
-        public IList<string> InfoMessages { get; private set; }
-
+        
         public DateTime? BirthDate { get; private set; }
-        public string Gender { get; private set; }
-        public Exception ValidationException { get; private set; }
-
-        public BISNumber()
+        public Gender? Gender { get; private set; }
+       
+        public BISNumber(string number) : base("Belgian BIS Number", number)
         {
-            this.ErrorMessages = new List<string>();
+            
         }
 
-        public BISNumber(string number)
-            : this()
-        {
-            this.Number = number;
-        }
-
-        public void Validate()
+  
+        public override void Validate()
         {
             if (!String.IsNullOrEmpty(this.Number))
             {
-
+                
                 Regex nonAllowedCharacters = new Regex(@"[^0-9. -]");
                 Regex nonNumeric = new Regex(@"[^0-9]");
 
@@ -40,7 +30,7 @@ namespace IDNumberValidation.National.Europe.Belgium
 
                 if (nonAllowedCharacters.IsMatch(bisnumber))
                 {
-                    this.ErrorMessages.Add("Non allowed character");
+                    this.Messages.Add(new Message(MessageType.Error, "Non-allowed character"));
                     this.IsValid = false;
                 }
                 else
@@ -51,7 +41,7 @@ namespace IDNumberValidation.National.Europe.Belgium
                     //LENGTH MUST BE 11 DIGITS
                     if (bisnumber.Length != 11)
                     {
-                        this.ErrorMessages.Add("Length != 11");
+                        this.Messages.Add(new Message(MessageType.Error, "Length != 11"));
                         this.IsValid = false;
                     }
                     else
@@ -66,7 +56,7 @@ namespace IDNumberValidation.National.Europe.Belgium
                             bool unknownBirthDay = false;
                             bool born2kOrLater = false;
 
-                            string gender = "(unknown)";
+                            Gender gender = IDNumberValidation.Gender.Unknown;
                             bool genderKnownAtTimeOfRegistration = true;
 
                             //FIRST 6 DIGITS ARE BIRTHDATE IN FORMAT YYMMDD
@@ -175,12 +165,12 @@ namespace IDNumberValidation.National.Europe.Belgium
                             else if (counter % 2 == 0) //EVEN
                             {
                                 counterOK = true;
-                                gender = "F"; //FEMALE
+                                gender = IDNumberValidation.Gender.Female; //FEMALE
                             }
                             else
                             {
                                 counterOK = true;
-                                gender = "M"; //MALE
+                                gender = IDNumberValidation.Gender.Male; //MALE
                             }
 
 
@@ -190,14 +180,23 @@ namespace IDNumberValidation.National.Europe.Belgium
 
 
                             if (!birthDateOK)
-                                this.ErrorMessages.Add("Invalid birthdate");
+                            {
+                                this.Messages.Add(new Message(MessageType.Error, "Invalid birthdate"));
+                                this.IsValid = false;
+                            }
                             if (!counterOK)
-                                this.ErrorMessages.Add("Invalid counter (= the three digits after birthdate)");
+                            {
+                                this.Messages.Add(new Message(MessageType.Error, "Invalid counter (= the three digits after birthdate)"));
+                                this.IsValid = false;
+                            }
                             if (!controlOK)
-                                this.ErrorMessages.Add("Invalid control number (= the last two digits)");
+                            {
+                                this.Messages.Add(new Message(MessageType.Error, "Invalid control number (= the last two digits)"));
+                                this.IsValid = false;
+                            }
 
 
-                            if (this.ErrorMessages.Count == 0) //NO ERRORS FOUND
+                            if (!this.IsValid.HasValue) //NOT SET TO FALSE, THUS NO ERRORS FOUND
                             {
                                 this.IsValid = true;
 
@@ -206,8 +205,6 @@ namespace IDNumberValidation.National.Europe.Belgium
 
                                 this.Gender = gender;
                             }
-                            else
-                                this.IsValid = false;
                         }
                         catch (Exception ex)
                         {
@@ -218,25 +215,6 @@ namespace IDNumberValidation.National.Europe.Belgium
             }
             else
                 this.ValidationException = new Exception("Number is empty");
-        }
-
-        public string GetErrorMessages()
-        {
-            if (this.ErrorMessages.Count == 0)
-                return null;
-            else
-            {
-                string s = "";
-
-                foreach (string m in this.ErrorMessages)
-                {
-                    s += m + ";";
-                }
-
-                s = s.TrimEnd(';');
-
-                return s;
-            }
         }
     }
 }
