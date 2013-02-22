@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace IDNumberValidation
 {
+    /// <summary>
+    /// An ID number validator class should implement this interface
+    /// </summary>
     public interface IIDNumberValidator
     {
         /// <summary>
@@ -27,7 +30,7 @@ namespace IDNumberValidation
         IList<Message> Messages { get; }
 
         /// <summary>
-        /// Contains a possible exception that arose during validation
+        /// Contains a possible exception that was thrown during validation
         /// </summary>
         Exception ValidationException { get; }
 
