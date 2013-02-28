@@ -18,7 +18,57 @@ namespace IDNumberValidation
             this.IdentifierType = identifierType;
             this.Number = number;
             this.Messages = new List<Message>();
+        }
 
+        public IList<Message> GetMessages(MessageType messageType)
+        {
+            var q = from m in this.Messages
+                    where m.Type == messageType
+                    select m;
+
+            return q.ToList();
+        }
+
+        public string GetMessagesAsString()
+        {
+            if (this.Messages.Count == 0)
+                return null;
+            else
+            {
+                StringBuilder sb = new StringBuilder();
+
+                foreach (Message m in this.Messages)
+                {
+                    sb.Append(m.Type.ToString() + ": "); 
+                    sb.Append(m.Text + ";");
+                }
+
+                string s = sb.ToString();
+                s = s.TrimEnd(';');
+
+                return s;
+            }
+        }
+
+        public string GetMessagesAsString(MessageType messageType)
+        {
+            if (this.Messages.Count == 0)
+                return null;
+            else
+            {
+                StringBuilder sb = new StringBuilder();
+
+                foreach (Message m in this.Messages.Where(m => m.Type == messageType))
+                {
+                    sb.Append(m.Type.ToString() + ": ");
+                    sb.Append(m.Text + ";");
+                }
+
+                string s = sb.ToString();
+                s = s.TrimEnd(';');
+
+                return s;
+            }
         }
 
         public abstract void Validate();
