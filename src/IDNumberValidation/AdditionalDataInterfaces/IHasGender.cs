@@ -8,6 +8,6 @@
         /// <summary>
         /// The gender of a person. If empty, it is unknown or could not be parsed
         /// </summary>
-        GenderEnum? Gender { get; }
+        GenderEnum? Gender { get; set; }
     }
 }

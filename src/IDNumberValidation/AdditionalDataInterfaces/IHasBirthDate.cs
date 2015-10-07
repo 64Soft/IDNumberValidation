@@ -10,6 +10,6 @@ namespace IDNumberValidation.AdditionalDataInterfaces
         /// <summary>
         /// The birth date of a person. If empty, it is unknown or could not be parsed
         /// </summary>
-        DateTime? BirthDate { get; }
+        DateTime? BirthDate { get; set; }
     }
 }

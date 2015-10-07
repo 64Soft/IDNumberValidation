@@ -6,10 +6,6 @@ namespace IDNumberValidation
 {
     public class IDNumberValidationResult
     {
-        public IDNumberValidationResult(string providedValue)
-        {
-            ProvidedValue = providedValue;
-        }
 
         /// <summary>
         ///     The provide number value
@@ -42,7 +38,17 @@ namespace IDNumberValidation
         /// </summary>
         public string ValidatedValue { get; set; }
 
+        /// <summary>
+        /// Additional data that can be derived from a valid number
+        /// Should be null when number is not valid
+        /// </summary>
         public IAdditionalData AdditionalData { get; set; }
+
+        public IDNumberValidationResult(string providedValue)
+        {
+            ProvidedValue = providedValue;
+            ValidationErrors = new List<string>();
+        }
   
     }
 }

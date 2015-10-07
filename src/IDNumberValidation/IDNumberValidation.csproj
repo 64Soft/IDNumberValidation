@@ -47,6 +47,8 @@
     <Compile Include="Countries\BE\Person\NRNumberAdditionalData.cs" />
     <Compile Include="Countries\BE\Person\NRNumberValidator.cs" />
     <Compile Include="AdditionalDataInterfaces\IAdditionalData.cs" />
+    <Compile Include="Countries\ZA\Person\NationalIDAdditionalData.cs" />
+    <Compile Include="Countries\ZA\Person\NationalIDValidator.cs" />
     <Compile Include="IIDNumberValidator.cs" />
     <Compile Include="_enums.cs" />
     <Compile Include="_extensions.cs" />

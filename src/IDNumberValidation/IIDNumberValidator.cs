@@ -9,7 +9,7 @@ namespace IDNumberValidation
     public interface IIDNumberValidator
     {
         IDNumberCategoryEnum Category { get;  }
-        string Name { get; set; }
+        string Name { get; }
         IDNumberValidationResult Validate(string number);
     }
 }

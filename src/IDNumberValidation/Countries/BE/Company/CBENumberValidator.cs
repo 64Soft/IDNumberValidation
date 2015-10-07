@@ -5,7 +5,7 @@ namespace IDNumberValidation.Countries.BE.Company
     public class CBENumberValidator : IIDNumberValidator
     {
         public IDNumberCategoryEnum Category { get; private set; }
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         public CBENumberValidator()
         {
@@ -17,7 +17,7 @@ namespace IDNumberValidation.Countries.BE.Company
         {
 
             var result = new IDNumberValidationResult(number);
-            result.CleanProvidedValue = number.ToAlphaNumericOnly().TrimStart("BE").Trim();
+            result.CleanProvidedValue = number.ToAlphaNumericOnly().TrimStart("BE").TrimStart("be").Trim();
 
             try
             {

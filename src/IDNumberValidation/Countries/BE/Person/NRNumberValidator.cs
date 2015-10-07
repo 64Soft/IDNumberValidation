@@ -9,7 +9,7 @@ namespace IDNumberValidation.Countries.BE.Person
     {
         
         public IDNumberCategoryEnum Category { get; private set; }
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         public NRNumberValidator()
         {
@@ -22,7 +22,7 @@ namespace IDNumberValidation.Countries.BE.Person
             var result = new IDNumberValidationResult(number);
             result.AdditionalData = new NRNumberAdditionalData();
 
-            result.CleanProvidedValue = number.ToAlphaNumericOnly().TrimStart("BE").Trim();
+            result.CleanProvidedValue = number.ToAlphaNumericOnly().TrimStart("BE").TrimStart("be").Trim();
 
             try
             {
@@ -189,6 +189,10 @@ namespace IDNumberValidation.Countries.BE.Person
                     {
                         result.IsValid = true;
                         result.ValidatedValue = rrnumber;
+                    }
+                    else //result.IsValid == false
+                    {
+                        result.AdditionalData = null;
                     }
                 }
                 else
