@@ -1,18 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{18024DC3-D63D-433F-87EB-0E884450305C}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{0DACC21A-6849-4E65-B20E-D512E45DE87E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IDNumberValidation</RootNamespace>
-    <AssemblyName>IDNumberValidation</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>TestConsoleApp</RootNamespace>
+    <AssemblyName>TestConsoleApp</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -34,30 +37,22 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enumerations.cs" />
-    <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="ICompanyIDNumberParser.cs" />
-    <Compile Include="IIDNumberWithBirthDateInfo.cs" />
-    <Compile Include="IIDNumberValidator.cs" />
-    <Compile Include="IIDNumberWithGenderInfo.cs" />
-    <Compile Include="IPersonIDNumberParser.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="National\Europe\Belgium\Parser.cs" />
-    <Compile Include="National\Europe\Belgium\BISNumber.cs" />
-    <Compile Include="National\Europe\Belgium\CBENumber.cs" />
-    <Compile Include="CompanyIdentifier.cs" />
-    <Compile Include="Identifier.cs" />
-    <Compile Include="IdentifierParsingResult.cs" />
-    <Compile Include="National\Europe\Belgium\NationalNumber.cs" />
-    <Compile Include="PersonIdentifier.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="National\Europe\Belgium\Documentation.txt" />
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IDNumberValidation\IDNumberValidation.csproj">
+      <Project>{18024dc3-d63d-433f-87eb-0e884450305c}</Project>
+      <Name>IDNumberValidation</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
