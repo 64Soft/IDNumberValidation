@@ -14,8 +14,13 @@ The ultimate goal is obviously to be able to validate any identification number 
 Following validations are implemented:
 
 # NATIONAL
+## AFRICA
+### SOUTH AFRICA
+* National ID Number (person)
+
 ## EUROPE
 ### BELGIUM
 * NR Number (person, National Registry number)
 * BIS Number (person, Social Security number for foreign people living or working in Belgium)
 * CBE Number (company, Crossroad Bank of Enterprises)
+
