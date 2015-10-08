@@ -3,7 +3,7 @@
 namespace IDNumberValidation.AdditionalDataInterfaces
 {
     /// <summary>
-    /// If an ID number contains birth date information, it should implement this interface
+    /// Indicates that an ID number contains birth date information of a person
     /// </summary>
     public interface IHasBirthDate
     {

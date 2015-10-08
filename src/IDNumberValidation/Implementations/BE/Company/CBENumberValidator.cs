@@ -1,7 +1,10 @@
 ﻿using System;
 
-namespace IDNumberValidation.Countries.BE.Company
+namespace IDNumberValidation.Implementations.BE.Company
 {
+    /// <summary>
+    /// Belgian Crossroad Bank of Enterprises (CBE) number validator
+    /// </summary>
     public class CBENumberValidator : IIDNumberValidator
     {
         public IDNumberCategoryEnum Category { get; private set; }

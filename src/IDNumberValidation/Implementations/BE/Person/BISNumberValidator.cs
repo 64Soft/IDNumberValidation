@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using IDNumberValidation.AdditionalDataInterfaces;
 
-namespace IDNumberValidation.Countries.BE.Person
+namespace IDNumberValidation.Implementations.BE.Person
 {
-    public class NRNumberValidator : IIDNumberValidator
+    /// <summary>
+    /// Belgian person BIS number validator
+    /// </summary>
+    public class BISNumberValidator : IIDNumberValidator
     {
-        
         public IDNumberCategoryEnum Category { get; private set; }
         public string Name { get; private set; }
 
-        public NRNumberValidator()
+        public BISNumberValidator()
         {
             Category = IDNumberCategoryEnum.Person;
-            Name = "BE_NR_Number_Validator";
+            Name = "BE_BIS_Number_Validator";
         }
 
         public IDNumberValidationResult Validate(string number)
         {
             var result = new IDNumberValidationResult(number);
-            result.AdditionalData = new NRNumberAdditionalData();
+            result.AdditionalData = new BISNumberAdditionalData();
 
             result.CleanProvidedValue = number.ToAlphaNumericOnly().TrimStart("BE").TrimStart("be").Trim();
 
@@ -28,11 +29,12 @@ namespace IDNumberValidation.Countries.BE.Person
             {
                 if (!string.IsNullOrEmpty(result.CleanProvidedValue))
                 {
+
                     var nonAllowedCharacters = new Regex(@"[^0-9. -]");
 
-                    var rrnumber = string.Copy(result.CleanProvidedValue);
+                    var bisnumber = string.Copy(result.CleanProvidedValue);
 
-                    if (nonAllowedCharacters.IsMatch(rrnumber))
+                    if (nonAllowedCharacters.IsMatch(bisnumber))
                     {
                         result.IsValid = false;
                         result.ValidationErrors.Add("Number contains non-allowed character");
@@ -40,7 +42,7 @@ namespace IDNumberValidation.Countries.BE.Person
                     else
                     {
                         //LENGTH MUST BE 11 DIGITS
-                        if (rrnumber.Length != 11)
+                        if (bisnumber.Length != 11)
                         {
                             result.IsValid = false;
                             result.ValidationErrors.Add("Length != 11");
@@ -52,25 +54,27 @@ namespace IDNumberValidation.Countries.BE.Person
                             var controlOK = false;
 
                             var unknownBirthDay = false;
+                            var unknownGender = false;
                             var born2kOrLater = false;
 
                             var gender = "(unknown)";
 
                             //FIRST 6 DIGITS ARE BIRTHDATE IN FORMAT YYMMDD
-                            var birthDatePart = rrnumber.Substring(0, 6);
+                            //MM = MM+40 IF GENDER KNOWN AT TIME OF REGISTRATION, OTHERWISE IS MM+20
+                            var birthDatePart = bisnumber.Substring(0, 6);
 
                             //NEXT 3 ARE COUNTER
-                            var counterPart = rrnumber.Substring(6, 3);
+                            var counterPart = bisnumber.Substring(6, 3);
 
                             //LAST 2 ARE CONTROLNUMBER
-                            var controlPart = rrnumber.Substring(9, 2);
+                            var controlPart = bisnumber.Substring(9, 2);
 
 
                             /* 1. CONTROL NUMBER CHECKING */
                             /******************************/
 
                             //CALCULATE CONTROLNUMER (= MOD 97 OF FIRST 9 DIGITS)
-                            var calculatedControl = 97 - (int) (long.Parse(birthDatePart + counterPart)%97);
+                            var calculatedControl = 97 - (int)(long.Parse(birthDatePart + counterPart) % 97);
 
                             if (calculatedControl != int.Parse(controlPart))
                             {
@@ -79,12 +83,12 @@ namespace IDNumberValidation.Countries.BE.Person
                                     * ALLOW BIRTHDATES OF YEAR 2000 AND LATER
                                 */
 
-                                calculatedControl = 97 - (int) (long.Parse("2" + birthDatePart + counterPart)%97);
+                                calculatedControl = 97 - (int)(long.Parse("2" + birthDatePart + counterPart) % 97);
 
                                 if (calculatedControl != int.Parse(controlPart))
                                 {
                                     /* THE CALCULATION STILL DOESN'T MATCH THE CONTROLNUMER, SO THIS IS AN INVALID
-                                        * REGISTRY NUMBER
+                                        * BIS NUMBER
                                     */
 
                                     controlOK = false;
@@ -103,25 +107,61 @@ namespace IDNumberValidation.Countries.BE.Person
                             /*************************/
 
                             var d = birthDatePart;
-                            //BUILD THE BIRTHDATE TO CHECK
-                            if (born2kOrLater)
-                                d = "20" + d;
+
+                            //MONTH PART WILL BE GREATER THAN 12. NEED TO SUBSTRACT 20 OR 40 TO GET A VALID MONTH
+                            var yearPart = d.Substring(0, 2);
+                            var monthPart = d.Substring(2, 2);
+                            var dayPart = d.Substring(4, 2);
+                            var monthPartInt = int.Parse(monthPart);
+
+                            var birthDate = new DateTime?();
+
+                            if (monthPartInt <= 12)
+                            {
+                                birthDateOK = false; //BIS number month part is month + 20 or + 40
+                            }
                             else
-                                d = "19" + d;
-                            //END BUILD
+                            {
+                                monthPartInt = monthPartInt - 20;
+                                if (monthPartInt <= 12)
+                                {
+                                    unknownGender = true;
+                                }
+                                else
+                                {
+                                    monthPartInt = monthPartInt - 20;
+                                }
 
-                            var format = "yyyyMMdd";
-                            DateTime birthDate;
+                                if (monthPartInt < 1 || monthPartInt > 12)
+                                {
+                                    birthDateOK = false;
+                                }
+                                else
+                                {
+                                    d = yearPart + monthPartInt.ToString().AddLeadCharacters('0', 2) + dayPart;
 
-                            birthDateOK = DateTime.TryParseExact(d, format, CultureInfo.CurrentCulture,
-                                DateTimeStyles.None,
-                                out birthDate);
+                                    //BUILD THE BIRTHDATE TO CHECK
+                                    if (born2kOrLater)
+                                        d = "20" + d;
+                                    else
+                                        d = "19" + d;
+                                    //END BUILD
+
+                                    var format = "yyyyMMdd";
+
+                                    DateTime bd;
+                                    birthDateOK = DateTime.TryParseExact(d, format, CultureInfo.CurrentCulture,
+                                        DateTimeStyles.None, out bd);
+
+                                    if (birthDateOK)
+                                        birthDate = bd;
+                                }
+                            }
 
                             if (!birthDateOK)
                             {
                                 //MONTH AND/OR DAY CAN BE 00 IF THESE ARE UNKNOWN. IF THIS IS THE CASE, FLAG THE BIRTHDATE AS VALID ANYWAY
-                                if (birthDatePart.Substring(2, 2).Equals("00") ||
-                                    birthDatePart.Substring(4, 2).Equals("00"))
+                                if (birthDatePart.Substring(2, 2).Equals("00") || birthDatePart.Substring(4, 2).Equals("00"))
                                 {
                                     unknownBirthDay = true;
                                     birthDateOK = true;
@@ -140,7 +180,7 @@ namespace IDNumberValidation.Countries.BE.Person
 
                             if (counter < 1 || counter > 997)
                                 counterOK = false;
-                            else if (counter%2 == 0) //EVEN
+                            else if (counter % 2 == 0) //EVEN
                             {
                                 counterOK = true;
                                 gender = "F"; //FEMALE
@@ -161,34 +201,34 @@ namespace IDNumberValidation.Countries.BE.Person
                                 result.IsValid = false;
                                 result.ValidationErrors.Add("Birthdate part not valid");
                             }
-
                             if (!counterOK)
                             {
                                 result.IsValid = false;
                                 result.ValidationErrors.Add("Counter part not valid");
                             }
-
                             if (!controlOK)
                             {
                                 result.IsValid = false;
                                 result.ValidationErrors.Add("Controlnumber part not valid");
                             }
-                                
 
                             if (!unknownBirthDay && birthDateOK)
-                                ((NRNumberAdditionalData)(result.AdditionalData)).BirthDate = birthDate;
+                                ((BISNumberAdditionalData)(result.AdditionalData)).BirthDate = birthDate;
 
                             if (gender == "F")
-                                ((NRNumberAdditionalData)(result.AdditionalData)).Gender = GenderEnum.Female;
+                                ((BISNumberAdditionalData)(result.AdditionalData)).Gender = GenderEnum.Female;
                             else if (gender == "M")
-                                ((NRNumberAdditionalData)(result.AdditionalData)).Gender = GenderEnum.Male;
+                                ((BISNumberAdditionalData)(result.AdditionalData)).Gender = GenderEnum.Male;
+
+                            ((BISNumberAdditionalData)(result.AdditionalData)).GenderKnown = !unknownGender;
+
                         }
                     }
 
                     if (!result.IsValid.HasValue)
                     {
                         result.IsValid = true;
-                        result.ValidatedValue = rrnumber;
+                        result.ValidatedValue = bisnumber;
                     }
                     else //result.IsValid == false
                     {
@@ -209,6 +249,7 @@ namespace IDNumberValidation.Countries.BE.Person
             }
 
             return result;
+ 
         }
     }
 }

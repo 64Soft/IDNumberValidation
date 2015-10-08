@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace IDNumberValidation
 {
+    /// <summary>
+    /// Interface to be implemented by each validator
+    /// </summary>
     public interface IIDNumberValidator
     {
         IDNumberCategoryEnum Category { get;  }

@@ -1,7 +1,7 @@
 ﻿namespace IDNumberValidation.AdditionalDataInterfaces
 {
     /// <summary>
-    /// If an ID number contains gender information, it should implement this interface
+    /// Indicates that an ID number contains gender information of a person
     /// </summary>
     public interface IHasGender
     {

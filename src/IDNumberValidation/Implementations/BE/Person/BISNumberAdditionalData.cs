@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using IDNumberValidation.AdditionalDataInterfaces;
 
-namespace IDNumberValidation.Countries.BE.Person
+namespace IDNumberValidation.Implementations.BE.Person
 {
     public class BISNumberAdditionalData : IAdditionalData, IHasBirthDate, IHasGender
     {

@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using IDNumberValidation.Countries.BE.Person;
 
-namespace IDNumberValidation.Countries.ZA.Person
+namespace IDNumberValidation.Implementations.ZA.Person
 {
+    /// <summary>
+    /// South African National ID number validator
+    /// </summary>
     public class NationalIDValidator : IIDNumberValidator
     {
         public IDNumberCategoryEnum Category { get; private set; }

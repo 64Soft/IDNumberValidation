@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{18024DC3-D63D-433F-87EB-0E884450305C}</ProjectGuid>
+    <ProjectGuid>{908D3387-B86E-4EA8-8042-05D97E8AB66B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IDNumberValidation</RootNamespace>
-    <AssemblyName>IDNumberValidation</AssemblyName>
+    <RootNamespace>IDNumberValidation.Tests</RootNamespace>
+    <AssemblyName>IDNumberValidation.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,40 +28,34 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementations\BE\Company\CBENumberValidator.cs" />
-    <Compile Include="Implementations\BE\Person\BISNumberAdditionalData.cs" />
-    <Compile Include="Implementations\BE\Person\BISNumberValidator.cs" />
-    <Compile Include="Implementations\BE\Person\NRNumberAdditionalData.cs" />
-    <Compile Include="Implementations\BE\Person\NRNumberValidator.cs" />
-    <Compile Include="AdditionalDataInterfaces\IAdditionalData.cs" />
-    <Compile Include="Implementations\ZA\Person\NationalIDAdditionalData.cs" />
-    <Compile Include="Implementations\ZA\Person\NationalIDValidator.cs" />
-    <Compile Include="IIDNumberValidator.cs" />
-    <Compile Include="_enums.cs" />
-    <Compile Include="_extensions.cs" />
-    <Compile Include="AdditionalDataInterfaces\IHasBirthDate.cs" />
-    <Compile Include="AdditionalDataInterfaces\IHasGender.cs" />
-    <Compile Include="IDNumberValidationResult.cs" />
+    <Compile Include="BE\BEValidatorsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZA\ZAValidatorsTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="IDNumberValidation.nuspec" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Implementations\BE\Documentation.txt" />
+    <ProjectReference Include="..\IDNumberValidation\IDNumberValidation.csproj">
+      <Project>{18024dc3-d63d-433f-87eb-0e884450305c}</Project>
+      <Name>IDNumberValidation</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
